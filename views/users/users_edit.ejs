@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Edit User</h1>
+    <h3><a href="/users">Back to Users List</a></h3>
+    <form name="addNewUser" method="POST" action="/users/edit/<%=dataUser.id%>">
+      <table >
+        <tr>E-mail</tr><br>
+        <tr><input type="text" name="email" value="<%=dataUser.email%>"></tr><br>
+        <tr>Password (*fill empty if you don't want to change the password)</tr><br>
+        <tr><input type="text" name="password1" placeholder="input your password"></tr><br>
+        <tr><input type="text" name="password2" placeholder="re-type your password"></tr><br>
+        <tr>Role</tr><br>
+        <tr>
+          <select name="role">
+            <option name="role" value="user" 
+            <%if (dataUser.role === 'user') {%>
+              selected
+            <%}%>
+              >User</option>
+            <option name="role" value="admin" 
+            <%if (dataUser.role === 'admin') {%>
+              selected
+            <%}%>
+            >Admin</option>
+          </select>
+        </tr><br>
+        <tr>Poin</tr><br>
+        <tr><input type="text" name="poin" value="<%=dataUser.poin%>"></tr><br>
+        <% if(err) {%>  
+          <tr><a  style="color:red" ><%=err%></a></tr><br>
+        <%}%>
+        <tr><input type="submit" value="Add New User"></tr><br>
+      </table>
+    </form>
+  </body>
+</html>
