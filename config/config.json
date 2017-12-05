@@ -2,7 +2,7 @@
   "development": {
     "username": "estfgnfc",
     "password": "qeEJcTBAEcCHdVlHdeJYiGePkb77zvEd",
-    "database": "keretakuApp",
+    "database": "estfgnfc",
     "host": "baasu.db.elephantsql.com",
     "dialect": "postgres",
     "port"    :5432
