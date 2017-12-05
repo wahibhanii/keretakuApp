@@ -7,12 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     arrivalTime: DataTypes.DATE,
     quota: DataTypes.INTEGER,
     price: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
   });
+
+
   return TrainRoute;
 };

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Train</title>
+  </head>
+  <body>
+    <a href="/trains">back</a>
+    <h1>Edit Train</h1>
+      <form action="/trains/edit/<%=dataTrain.id%>" method="post">
+        Train Name:<br>
+        <input type="text" name="trainName" value="<%=dataTrain.trainName%>"><br>
+        <input type="submit" value="Submit">
+      </form>
+  </body>
+</html>
