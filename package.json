@@ -1,0 +1,24 @@
+{
+  "name": "keretakuapp",
+  "version": "1.0.0",
+  "description": "Pair Project Phase 1 Hacktiv8 Bootcamp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wahibhanii/keretakuApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wahibhanii/keretakuApp/issues"
+  },
+  "homepage": "https://github.com/wahibhanii/keretakuApp#readme",
+  "dependencies": {
+    "pg": "^7.4.0",
+    "sequelize": "^4.26.0",
+    "sequelize-cli": "^3.2.0"
+  }
+}
