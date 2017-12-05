@@ -2,25 +2,82 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('Person', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
+      return queryInterface.bulkInsert('Routes', [{
+        departure: 'Jakarta',
+        arrival: 'Surabaya'
+      },{
+        departure: 'Jakarta',
+        arrival: 'Bandung'
+      },{
+        departure: 'Jakarta',
+        arrival: 'Yogyakarta'
+      },{
+        departure: 'Surabaya',
+        arrival: 'Jakarta'
+      },{
+        departure: 'Surabaya',
+        arrival: 'Bandung'
+      },{
+        departure: 'Surabaya',
+        arrival: 'Yogyakarta'
+      },{
+        departure: 'Bandung',
+        arrival: 'Yogyakarta'
+      },{
+        departure: 'Bandung',
+        arrival: 'Jakarta'
+      },{
+        departure: 'Bandung',
+        arrival: 'Surabaya'
+      },{
+        departure: 'Yogyakarta',
+        arrival: 'Jakarta'
+      },{
+        departure: 'Yogyakarta',
+        arrival: 'Surabaya'
+      },{
+        departure: 'Yogyakarta',
+        arrival: 'Bandung'
+      }]);
   },
 
   down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
+    return queryInterface.bulkDelete('Routes', [{
+      departure: 'Jakarta',
+      arrival: 'Surabaya'
+    },{
+      departure: 'Jakarta',
+      arrival: 'Bandung'
+    },{
+      departure: 'Jakarta',
+      arrival: 'Yogyakarta'
+    },{
+      departure: 'Surabaya',
+      arrival: 'Jakarta'
+    },{
+      departure: 'Surabaya',
+      arrival: 'Bandung'
+    },{
+      departure: 'Surabaya',
+      arrival: 'Yogyakarta'
+    },{
+      departure: 'Bandung',
+      arrival: 'Yogyakarta'
+    },{
+      departure: 'Bandung',
+      arrival: 'Jakarta'
+    },{
+      departure: 'Bandung',
+      arrival: 'Surabaya'
+    },{
+      departure: 'Yogyakarta',
+      arrival: 'Jakarta'
+    },{
+      departure: 'Yogyakarta',
+      arrival: 'Surabaya'
+    },{
+      departure: 'Yogyakarta',
+      arrival: 'Bandung'
+    }]);
   }
 };
