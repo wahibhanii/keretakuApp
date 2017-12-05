@@ -4,6 +4,7 @@
   <body>
     <h1>Users List</h1>
     <h3><a href="/">Return to Home</a></h3>
+    <h3><a href="/users/add">Add new User</a></h3>
     <table border="1">
       <thead>
         <tr>
@@ -12,6 +13,7 @@
           <th>Password</th>
           <th>Role</th>
           <th>Point</th>
+          <th colspan="2">Action</th>
         </tr>
       </thead>
       <% dataUsers.forEach((user)=>{ %>
@@ -21,6 +23,8 @@
             <td><%=user.password%></td>
             <td><%=user.role%></td>
             <td><%=user.point%></td>
+            <td><a href="/users/edit/<%=user.id%>">Edit</a></td>
+            <td><a href="/users/delete/<%=user.id%>">Delete</a></td>
         </tr>
       <%})%>
     </table>
