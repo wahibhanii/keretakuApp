@@ -11,7 +11,7 @@ module.exports = {
       RouteId: {
         type: Sequelize.INTEGER
       },
-      TraindId: {
+      TrainId: {
         type: Sequelize.INTEGER
       },
       departureTime: {
@@ -27,11 +27,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });

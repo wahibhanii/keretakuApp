@@ -1,11 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var TrainRoute = sequelize.define('TrainRoute', {
-    RouteId: DataTypes.INT,
-    TraindId: DataTypes.INT,
+    RouteId: DataTypes.INTEGER,
+    TrainId: DataTypes.INTEGER,
     departureTime: DataTypes.DATE,
     arrivalTime: DataTypes.DATE,
-    quota: DataTypes.INT
+    quota: DataTypes.INTEGER,
+    price: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
