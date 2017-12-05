@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Train List</title>
+  </head>
+  <body>
+    <a href="/">Home</a>
+    <h1>Train List</h1>
+    <table>
+      <tr>
+        <th>Id</th>
+        <th>Train Name</th>
+        <th>Action</th>
+      </tr>
+      <%dataTrains.forEach((train)=>{%>
+      <tr>
+        <td><%=train.id%></td>
+        <td><%=train.trainName%></td>
+        <td><a href ="/trains/edit/<%=train.id%>">Edit</a> |
+          <a href = "/trains/delete/<%=train.id%>">Delete</td>
+      </tr>
+      <%})%>
+
+    </table>
+
+  </body>
+</html>

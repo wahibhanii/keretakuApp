@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Route</title>
+  </head>
+  <body>
+    <a href="/routes">back</a>
+    <h1>Edit Route</h1>
+      <form action="/routes/edit/<%=dataRoute.id%>" method="post">
+        Departure:<br>
+        <input type="text" name="departure" value="<%=dataRoute.departure%>"><br>
+        Arrival:<br>
+        <input type="text" name="arrival" value="<%=dataRoute.arrival%>"><br>
+        <input type="submit" value="Submit">
+      </form>
+  </body>
+</html>

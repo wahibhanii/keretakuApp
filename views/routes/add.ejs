@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add Route</title>
+  </head>
+  <body>
+    <h1>Add Route</h1>
+    <h3><a href="/routes"></a>back</h3>
+  </body>
+    <%if(err){%>
+      <%=err%>
+    <%}%>
+  <br>
+  <form action="/routes/add" method="post">
+      Departure:<br>
+      <input type="text" name="departure"><br>
+      Arrival:<br>
+      <input type="text" name="arrival"><br>
+    <input type="submit" value="Submit">
+  </form>
+
+</html>
