@@ -1,9 +1,10 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "keretakuapp",
-    "host": "127.0.0.1",
-    "dialect": "postgres
-  },
+    "username": "estfgnfc",
+    "password": "qeEJcTBAEcCHdVlHdeJYiGePkb77zvEd",
+    "database": "keretakuApp",
+    "host": "baasu.db.elephantsql.com",
+    "dialect": "postgres",
+    "port"    :5432
+  }
 }
