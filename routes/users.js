@@ -76,7 +76,7 @@ router.get('/edit/:id', (req, res) => {
   .catch((err) => {
     res.redirect(`/add/?err=${err.message}`);
   })
-  
+
 })
 
 router.post('/edit/:id', (req, res) => {

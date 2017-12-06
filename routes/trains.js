@@ -54,26 +54,63 @@ router.get('/delete/:id', (req,res)=>{
   })
 })
 
-//---------------- SCHEDULE ---------------------
+//------------------- SCHEDULE ---------------------
 router.get('/schedule', (req,res)=>{
-  Route.findAll()
+  let findDeparture = '';
+  let findArrival = '';
+  let objWhere = {}
+  if(req.query && req.query.hasOwnProperty('filter')){
+    findDeparture = req.query.filter.split('-')[0]
+    findArrival   = req.query.filter.split('-')[1]
+    objWhere.departure = findDeparture
+    objWhere.arrival = findArrival
+  }
+
+  let err;
+  Route.findAll({
+    where: objWhere
+  })
   .then(dataRoutes=>{
-    TrainRoute.findAll({
+
+    //----------------------- SEARCH UNIQUE -----------------------------//
+    let cityArr = [];
+    dataRoutes.forEach((dataRoute)=>{
+      cityArr.push(dataRoute.departure)
+    })
+
+    var cityUnique = cityArr.filter((value, index, self)=> {
+      return self.indexOf(value) === index;
+    });
+    //-------------------------------------------------------------------//
+              //-- BUAT CARI RUTE SESUAI FILTER --
+    let searchRouteId = {}
+    if(req.query && req.query.hasOwnProperty('filter')){
+      searchRouteId.RouteId = dataRoutes[0].id
+      }
+    TrainRoute.findAll({ //cari train route
+      where : searchRouteId,
       include: [
         {model: Route},
         {model: Train}
-      ]
-    })
-    .then((trainRoutes)=>{
-      res.render('./trains/schedule',{
-        trainRoutes : trainRoutes,
-        dataRoutes  : dataRoutes
+      ]}
+    )
+      .then((trainRoutes)=>{
+        // res.send(trainRoutes)
+        res.render('./trains/schedule',{
+          trainRoutes : trainRoutes,
+          cityUnique  : cityUnique
+        })
+      })
+      .catch(err=>{
+        res.redirect(`/schedule/?err=${err.message}`)
       })
     }).catch(err=>{
-      res.send(err)
-    })
+    res.send(err)
   })
 })
 
+router.post('/schedule',(req,res)=>{
+  res.redirect(`/trains/schedule/?filter=${req.body.departure}-${req.body.arrival}`)
+})
 
 module.exports = router;
