@@ -1,16 +1,15 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Transaction = sequelize.define('Transaction', {
-    TrainRouteId: DataTypes.STRING,
-    UserId: DataTypes.STRING,
-    departureDate: DataTypes.DATE,
+    TrainRouteId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
+    departureTime: DataTypes.DATE,
     seatReserved: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
   });
+
+  Transaction.associate = (models) => {
+    Transaction.belongsTo(models.User)
+  }
+
   return Transaction;
 };
