@@ -3,6 +3,7 @@ const router = express.Router();
 const models = require('../models')
 const User = models.User
 const TrainRoute = models.TrainRoute
+const Transaction = models.Transaction
 const Route = models.Route
 const passwordAuth = require ('../helpers/passwordAuth')
 const adminAuth = require('../helpers/adminAuth')
@@ -218,12 +219,19 @@ router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
 // --------------- ALL TRANSACTION --------------
 
 router.get('/:id/transactions/', (req, res) => {
-  // let userId = req.params.id
+  let userId = req.params.id
   User.findAll({
-    // where: {id: Userid},
-    include : [{model: TrainRoute,
-      include: [{model: Route}]
-      }]
+    where: {id: userId},
+    include : [{
+      model: TrainRoute
+      // ,
+      // include: [{model: Route}]
+      }
+      // ,
+      // {model: Transaction,
+      //   attributes: ['id', 'TrainRouteId', 'departureTime','seatReserved']
+      // }
+    ]
   })
   .then((dataTransactions) => {
     res.send(dataTransactions)

@@ -15,8 +15,9 @@ router.get('/', (req,res)=>{
 
 //add route
 router.get('/add', (req,res)=>{
+  let err = req.query.err;
   res.render('./routes/add',{
-    err : false
+    err : err
   })
 })
 
@@ -28,9 +29,10 @@ router.post('/add', (req,res)=>{
   ).then(()=>{
     res.redirect('/routes')
   }).catch((err)=>{
-    res.render('./routes/add',{
-      err : err.message
-    })
+    res.redirect(`/routes/add/?err=${err.message}`)
+    // res.render('./routes/add',{
+    //   err : err.message
+    // })
   })
 })
 
@@ -62,6 +64,7 @@ router.get('/delete/:id', (req,res)=>{
     res.redirect('/routes')
   })
 })
+
 
 
 module.exports = router;

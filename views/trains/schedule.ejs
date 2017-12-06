@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Schedule</title>
+  </head>
+  <h1>Train Schedule</h1>
+  <body>
+
+    <form action="/trains/schedule" method=post>
+      <fieldset>
+        <legend>Order Ticket:</legend>
+        <br>
+        <select name="departure">
+          <option>---Departure---</option>
+          <%dataRoutes.forEach((dataRoute)=>{%>
+          <option value="<%=dataRoute.departure%>"><%=dataRoute.departure%></option>
+          <%})%>
+        </select><br>
+        <br>
+        <select name="arrival">
+          <option>---Arrival---</option>
+          <option value="Jakarta">Jakarta</option>
+          <option value="Surabaya">Surabaya</option>
+          <option value="Yogyakarta">Yogyakarta</option>
+          <option value="Bandung">Bandung</option>
+        </select><br>
+        <br>
+        <input type="submit" value="Submit">
+      </fieldset>
+    </form>
+
+      <table>
+        <tr>
+          <th>Train Name</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Departure Time</th>
+          <th>Arrival Time</th>
+          <th>quota</th>
+          <th>price</th>
+        </tr>
+        <%trainRoutes.forEach((trainRoute)=>{%>
+        <tr>
+          <td><%=trainRoute.Train.trainName%></td>
+          <td><%=trainRoute.Route.departure%></td>
+          <td><%=trainRoute.Route.arrival%></td>
+          <td><%=trainRoute.departureTime%></td>
+          <td><%=trainRoute.arrivalTime%></td>
+          <td><%=trainRoute.quota%></td>
+          <td><%=trainRoute.price%></td>
+        </tr>
+        <%})%>
+
+      </table>
+  </body>
+</html>

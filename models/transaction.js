@@ -5,12 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     UserId: DataTypes.INTEGER,
     departureTime: DataTypes.DATE,
     seatReserved: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
   });
+
+  Transaction.associate = (models) => {
+    Transaction.belongsTo(models.User)
+  }
+
   return Transaction;
 };
