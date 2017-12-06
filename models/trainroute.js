@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.INTEGER
   });
 
+  TrainRoute.associate = function (models) {
+    TrainRoute.belongsTo(models.Route);
+    TrainRoute.belongsTo(models.Train)
+  };
+
 
   return TrainRoute;
 };

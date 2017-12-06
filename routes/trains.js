@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router()
 const models = require('../models')
 const Train = models.Train
-
-//show all train
+const TrainRoute = models.TrainRoute
+const Route = models.Route
+//---------------- ALL TRAIN ---------------------
 router.get('/', (req,res)=>{
   Train.findAll()
   .then((dataTrains)=>{
@@ -13,7 +14,7 @@ router.get('/', (req,res)=>{
   })
 })
 
-//add train
+//----------------- ADD TRAIN ---------------------
 router.get('/add', (req,res)=>{
   res.render('./trains/add')
 })
@@ -26,7 +27,7 @@ router.post('/add', (req,res)=>{
   })
 })
 
-//edit train
+//---------------- EDIT TRAIN ----------------------
 router.get('/edit/:id', (req,res)=>{
   Train.findById(req.params.id)
   .then((dataTrain)=>{
@@ -45,17 +46,34 @@ router.post('/edit/:id', (req,res)=>{
   })
 })
 
-//delete
+//-------------------- DELETE ----------------------
 router.get('/delete/:id', (req,res)=>{
   Train.destroy({where: {id : req.params.id}})
   .then(()=>{
     res.redirect('/trains')
   })
-
-
-  // public static destroy(options: Object): Promise<Integer>
 })
 
+//---------------- SCHEDULE ---------------------
+router.get('/schedule', (req,res)=>{
+  Route.findAll()
+  .then(dataRoutes=>{
+    TrainRoute.findAll({
+      include: [
+        {model: Route},
+        {model: Train}
+      ]
+    })
+    .then((trainRoutes)=>{
+      res.render('./trains/schedule',{
+        trainRoutes : trainRoutes,
+        dataRoutes  : dataRoutes
+      })
+    }).catch(err=>{
+      res.send(err)
+    })
+  })
+})
 
 
 module.exports = router;
