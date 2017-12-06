@@ -95,7 +95,6 @@ router.get('/schedule', (req,res)=>{
       ]}
     )
       .then((trainRoutes)=>{
-        // res.send(trainRoutes)
         res.render('./trains/schedule',{
           trainRoutes : trainRoutes,
           cityUnique  : cityUnique
