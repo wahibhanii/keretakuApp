@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h1><%dataUser.email%></h1>
+    <h1><%=dataTransactions.email%></h1>
+    <h2>Role: <%=dataTransactions.role%></h2>
     <h3><a href="/">Back to Home Page</a></h3>
     <h2>My Transactions</h2>
     <table>
       <tr>
         <thead>
           <th>Transaction ID</th>
-          <>
+          <th>From</th>
+          <th>To</th>
+          <th>Departure Time</th>
+          <th>Action</th>
         </thead>
       </tr>
-
-
+      <% dataTransactions.TrainRoutes.forEach( (trainRoutes) => {%>
+        <tr>
+          <td><%= trainRoutes.Transaction.id%></td>
+          <td><%= trainRoutes.Route.departure%></td>
+          <td><%= trainRoutes.Route.arrival%></td>
+          <td><%= trainRoutes.departureTime%></td>
+        </tr>
+      <%})%>
     </table>
+    <h2><a href="/trains/schedule">Book Trains!</a></h2>
   </body>
 </html>
