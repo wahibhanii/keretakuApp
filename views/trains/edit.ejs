@@ -12,5 +12,10 @@
         <input type="text" name="trainName" value="<%=dataTrain.trainName%>"><br>
         <input type="submit" value="Submit">
       </form>
+      <%if(err){%>
+        <tr>
+          <a style="color:red"><%=err%></a>
+        </tr>
+      <%}%>
   </body>
 </html>

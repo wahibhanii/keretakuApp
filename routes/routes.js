@@ -30,31 +30,38 @@ router.post('/add', (req,res)=>{
     res.redirect('/routes')
   }).catch((err)=>{
     res.redirect(`/routes/add/?err=${err.message}`)
-    // res.render('./routes/add',{
-    //   err : err.message
-    // })
   })
 })
 
 //edit route
 router.get('/edit/:id', (req,res)=>{
-  Route.findById(req.params.id)
-  .then((dataRoute)=>{
-    res.render('./routes/edit',{
-      dataRoute : dataRoute
+  let err;
+    if(req.query && req.query.hasOwnProperty('err')){
+      err = req.query.err
+    }
+    Route.findById(req.params.id)
+    .then((dataRoute)=>{
+      res.render('./routes/edit',{
+        dataRoute : dataRoute,
+        err       : err
+      })
     })
-  })
+
 })
 
 router.post('/edit/:id', (req,res)=>{
-  Route.update({
-    departure : req.body.departure,
-    arrival   : req.body.arrival
-  },
-    {where: {id : req.params.id}})
-    .then(()=>{
-    res.redirect('/routes')
-  })
+  if(req.body.departure !== '' || req.body.arrival !== ''){
+    Route.update({
+      departure : req.body.departure,
+      arrival   : req.body.arrival
+    },
+      {where: {id : req.params.id}})
+      .then(()=>{
+      res.redirect('/routes')
+    })
+  } else {
+    res.redirect(`/routes/edit/${req.params.id}/?err=Departure and arrival must be filled`)
+  }
 })
 
 //delete
