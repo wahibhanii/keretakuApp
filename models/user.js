@@ -2,21 +2,15 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define('User', {
     email   : {
       type     : DataTypes.STRING,
       validate : {
-        notNull: (value, next) => {
-          if (value === null) {
-            return next('E-mail field cannot be empty!')
-          } else {
-            next()
-          }
-        },
+        notEmpty : true,
         isEmail : true,
-        isUnique: (value, next) => {
-          console.log('')
+        isUnique: function (value, next){
+          console.log('is unique >>> ', value, this)
           const Op = sequelize.Op
           User.findAll({
             where: {
@@ -25,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
             }
           })
           .then((dataUsers)=>{
+            // console.log('----->> ',dataUsers, userId)
             if (dataUsers.length > 0){
               return next('E-mail already in use')
             } else {
@@ -50,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
       user.password = hashPassword
     });
   });
+
+  User.associate = (models) => {
+    User.belongsToMany(models.TrainRoute, {through: 'Transaction', foreignKey: 'UserId', otherKey: 'TrainRouteId'})
+  }
 
   return User;
 };

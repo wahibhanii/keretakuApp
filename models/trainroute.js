@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.INTEGER
   });
 
-
+  TrainRoute.associate = (models) => {
+    TrainRoute.belongsToMany(models.User, {through: 'Transaction', foreignKey: 'TrainRouteId', otherKey: 'UserId'})
+  }
   return TrainRoute;
 };

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models')
 const User = models.User
+const TrainRoute = models.TrainRoute
+const Route = models.Route
 const passwordAuth = require ('../helpers/passwordAuth')
 const adminAuth = require('../helpers/adminAuth')
 
@@ -83,6 +85,7 @@ router.get('/edit/:id', (req, res) => {
 router.post('/edit/:id', (req, res) => {
   let userId = req.params.id
   let newUser = {
+    id        : userId,
     email     : req.body.email,
     password1 : req.body.password1,
     password2 : req.body.password2,
@@ -212,8 +215,19 @@ router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
 
 })
 
+// --------------- ALL TRANSACTION --------------
 
-
-
+router.get('/:id/transactions/', (req, res) => {
+  // let userId = req.params.id
+  User.findAll({
+    // where: {id: Userid},
+    include : [{model: TrainRoute,
+      include: [{model: Route}]
+      }]
+  })
+  .then((dataTransactions) => {
+    res.send(dataTransactions)
+  })
+})
 
 module.exports = router
