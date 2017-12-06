@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isEmail : true,
         isUnique: (value, next) => {
+          console.log('')
           const Op = sequelize.Op
           User.findAll({
             where: {

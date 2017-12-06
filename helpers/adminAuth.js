@@ -12,4 +12,4 @@ let adminAuthHandler = (req, res, next) => {
 
 module.exports = {
   adminAuthHandler : adminAuthHandler
-}
+} 

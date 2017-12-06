@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Routes</title>
+  </head>
+  <body>
+    <h1>Routes List</h1>
+    <h3><a href="/">Home</a></h3>
+    <h3><a href="/routes/add">Add Route</a></h3>
+    <table>
+      <tr>
+      <th>Id</th>
+      <th>Departure</th>
+      <th>Arrival</th>
+      <th>Action</th>
+      </tr>
+        <%dataRoutes.forEach((route)=>{%>
+        <tr>
+          <td><%=route.id%></td>
+          <td><%=route.departure%></td>
+          <td><%=route.arrival%></td>
+          <td><a href ="/routes/edit/<%=route.id%>">Edit</a> |
+            <a href="/routes/delete/<%=route.id%>">Delete</a></td>
+        </tr>
+      <%})%>
+    </table>
+
+  </body>
+</html>
