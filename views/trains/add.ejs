@@ -13,7 +13,9 @@
       <input type="submit" value="Submit">
     </form>
 
-
+    <% if(err) {%>
+      <tr><a  style="color:red" ><%=err%></a></tr><br>
+    <%}%>
 
   </body>
 </html>

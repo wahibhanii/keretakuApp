@@ -19,7 +19,7 @@
         <td><%=train.id%></td>
         <td><%=train.trainName%></td>
         <td><a href ="/trains/edit/<%=train.id%>">Edit</a> |
-          <a href = "/trains/delete/<%=train.id%>">Delete</td>
+          <a href = "/trains/delete/<%=train.id%>" onclick="return confirm('delete this train?')">Delete</td>
       </tr>
       <%})%>
 

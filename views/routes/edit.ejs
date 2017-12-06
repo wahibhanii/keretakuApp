@@ -14,5 +14,8 @@
         <input type="text" name="arrival" value="<%=dataRoute.arrival%>"><br>
         <input type="submit" value="Submit">
       </form>
+      <%if(err){%>
+        <%=err%>
+      <%}%>
   </body>
 </html>

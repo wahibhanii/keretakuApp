@@ -1,4 +1,5 @@
 'use strict';
+const convertTime = require('../helpers/convertTime');
 module.exports = (sequelize, DataTypes) => {
   var TrainRoute = sequelize.define('TrainRoute', {
     RouteId: DataTypes.INTEGER,
@@ -16,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
     TrainRoute.belongsTo(models.Route);
     TrainRoute.belongsTo(models.Train)
   };
+
+
+  TrainRoute.prototype.convertTime = function (date) {
+    return convertTime(date)
+  }
 
 
   return TrainRoute;
