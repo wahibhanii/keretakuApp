@@ -22,7 +22,7 @@
           <td><%= trainRoutes.Transaction.id%></td>
           <td><%= trainRoutes.Route.departure%></td>
           <td><%= trainRoutes.Route.arrival%></td>
-          <td><%= trainRoutes.departureTime%></td>
+          <td><%= trainRoutes.Transaction.departureTime%></td>
           <td><a href="/users/<%=dataTransactions.id%>/transactions/<%= trainRoutes.Transaction.id%>/delete" onclick = "return confirm ('Cancel this train booking??')">Cancel Booking</a></td>
         </tr>
       <%})%>

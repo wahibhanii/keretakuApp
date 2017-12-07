@@ -10,7 +10,8 @@ router.get('/', adminAuth.adminAuthHandler,(req,res)=>{
   Train.findAll()
   .then((dataTrains)=>{
     res.render('./trains/train', {
-      dataTrains : dataTrains
+      dataTrains : dataTrains,
+      session : req.session
     })
   })
 })
@@ -23,7 +24,8 @@ router.get('/add', adminAuth.adminAuthHandler,(req,res)=>{
     err = req.query.err
   }
   res.render('./trains/add',{
-    err:err
+    err:err,
+    session : req.session
   })
 })
 
@@ -50,7 +52,8 @@ router.get('/edit/:id', adminAuth.adminAuthHandler,(req,res)=>{
   .then((dataTrain)=>{
     res.render('./trains/edit',{
       dataTrain : dataTrain,
-      err       : err
+      err       : err,
+      session : req.session
     })
   })
 })
@@ -77,8 +80,8 @@ router.get('/delete/:id',adminAuth.adminAuthHandler,(req,res)=>{
 })
 
 //------------------- SCHEDULE ---------------------
-router.get('/schedule',adminAuth.adminAuthHandler,(req,res)=>{
-  console.log('*************',req.session.user.role);
+router.get('/schedule',(req,res)=>{
+  // console.log('*************',req.session.user.role);
   let findDeparture = '';
   let findArrival = '';
   let objWhere = {}
@@ -127,14 +130,15 @@ router.get('/schedule',adminAuth.adminAuthHandler,(req,res)=>{
           {model: Train}
         ]}
       ).then((trainRoutes)=>{
-        // console.log(trainRoutes);
+        console.log(trainRoutes);
         if (trainRoutes.length == 0) { //RouteId belum diassign ke TrainRoutes
           err = 'Routes are not found'
         }
           res.render('./trains/schedule',{
             trainRoutes : trainRoutes,
             cityUnique  : cityUnique,
-            err         : err
+            err         : err,
+            session : req.session
           })
         })
         .catch(err=>{

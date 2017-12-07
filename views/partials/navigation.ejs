@@ -4,5 +4,9 @@
   <a href="/users">User</a>
   <a href="/trains">Train</a>
   <a href="/routes">Route</a>
-  <a href="#">MyBooking</a>
+  <%if (session.user == undefined) {%>
+    <a href="/users/login">MyBooking</a>
+  <%} else {%>
+  <a href="/users/<%=session.user.userId%>/transactions">MyBooking</a>
+  <%}%>
 </div>

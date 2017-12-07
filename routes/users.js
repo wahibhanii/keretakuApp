@@ -11,6 +11,7 @@ const adminAuth       = require('../helpers/adminAuth')
 const convertTime     = require('../helpers/convertTime')
 const getTripTime     = require('../helpers/getTripTime')
 const authHandler     = require('../helpers/adminAuth')
+const sendBookingInfo = require('../helpers/email')
 
 // ------------------- READ --------------------------
 router.get('/', (req, res)=> {
@@ -22,7 +23,8 @@ router.get('/', (req, res)=> {
   .then((dataUsers)=>{
     res.render('./users/users', {
       dataUsers : dataUsers,
-      err       : err
+      err       : err,
+      session : req.session
     })
   })
   .catch((err) => {
@@ -37,7 +39,8 @@ router.get('/add', (req, res) => {
     err = req.query.err
   }
   res.render('./users/users_add', {
-    err: err
+    err: err,
+    session : req.session
   })
 })
 
@@ -79,7 +82,8 @@ router.get('/edit/:id', (req, res) => {
   .then((dataUser) => {
     res.render('./users/users_edit', {
       dataUser : dataUser,
-      err: err
+      err: err,
+      session : req.session
     })
   })
   .catch((err) => {
@@ -139,7 +143,8 @@ router.get('/delete/:id', (req, res) => {
   .then(() => {
     res.render('./users/users_delete',{
       dataUser : dataUser,
-      err      : err
+      err      : err,
+      session : req.session
     })
   })
   .catch((err) => {
@@ -154,7 +159,8 @@ router.get('/signup', (req, res) => {
     err = req.query.err
   }
   res.render('./users/users_signup', {
-    err: err
+    err: err,
+    session : req.session
   })
 })
 
@@ -192,7 +198,8 @@ router.get('/login', (req, res) => {
     err = req.query.err
   }
   res.render('./users/users_login', {
-    err: err
+    err: err,
+    session : req.session
   })
 })
 
@@ -209,7 +216,8 @@ router.post('/login', (req, res) => {
       let loginMessage = 'You have logged in!'
       req.session.user = newSession
       res.render('./index',{
-        loginMessage : 'You have logged in!'
+        loginMessage : 'You have logged in!',
+        session : req.session
       })
     }
   })
@@ -218,11 +226,11 @@ router.post('/login', (req, res) => {
   })
 })
 
-//------------------- USERPAGE ----------------
-router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
-  res.send(req.session.user)
+// //------------------- USERPAGE ----------------
+// router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
+//   res.send(req.session.user)
 
-})
+// })
 
 
 
@@ -256,11 +264,11 @@ router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
 //   })
 // })
 
-
+// ======================== BOOK TRAIN =================================
 router.post('/booktrain', (req, res) => {
   let err
   // booking confirmation and checkout, choose passenger number
-  let userId = 15 // nanti ganti req session
+  let userId = req.session.user.userId// nanti ganti req session
   let trainRouteId = req.body.trainRouteId;
   let reservedSeat = Number(req.body.reservedSeat)
   let departureDateTime = getTripTime(req.body.departureDate,req.body.departureTime)
@@ -303,7 +311,8 @@ router.post('/booktrain', (req, res) => {
         seatLeft : (dataTrainRoute.quota - reserved),
         reservedSeat: reservedSeat,
         departureDateTime : departureDateTime,
-        err: err
+        err: err,
+        session : req.session
       })
     })
   })
@@ -319,7 +328,20 @@ router.post('/booktrain/success', (req, res) => {
   }
   Transaction.create(newTransaction)
   .then(()=>{
-    
+    let bookingInfo = {
+      email         : req.body.email,
+      TrainRouteId  : req.body.trainRouteId,
+      UserId        : req.body.userId,
+      departure     : req.body.departure,
+      arrival       : req.body.arrival,
+      departureTime : req.body.departureTime,
+      seatReserved  : req.body.seatReserved,
+      trainName     : req.body.trainName
+    }
+    sendBookingInfo(bookingInfo)
+    console.log(bookingInfo)
+
+    res.redirect(`/users/${req.session.user.userId}/transactions`)
   })
 })
 
@@ -327,18 +349,22 @@ router.post('/booktrain/success', (req, res) => {
 // --------------------- ALL TRANSACTION --------------
 
 router.get('/:id/transactions/', (req, res) => {
-  let userId = req.params.id
+  let userId = req.session.user.userId
   User.findAll({
     where: {id: userId},
     include : [{
       model: TrainRoute,
-      include: [{model: Route}]
+      include: [{model: Route}],
+      session : req.session
       }
     ]
   })
   .then((dataTransactions) => {
+    // res.send(dataTransactions)
     res.render('./users/users_transactions',{
-      dataTransactions : dataTransactions[0]
+      
+      dataTransactions : dataTransactions[0],
+      session : req.session
     })
   })
 })

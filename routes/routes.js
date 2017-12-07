@@ -9,7 +9,8 @@ router.get('/', (req,res)=>{
   Route.findAll()
   .then((dataRoutes)=>{
     res.render('./routes/route', {
-      dataRoutes : dataRoutes
+      dataRoutes : dataRoutes,
+      session : req.session
     })
   })
 })
@@ -18,7 +19,8 @@ router.get('/', (req,res)=>{
 router.get('/add', authHandler.adminAuthHandler,(req,res)=>{
   let err = req.query.err;
   res.render('./routes/add',{
-    err : err
+    err : err,
+    session : req.session
   })
 })
 
@@ -44,7 +46,8 @@ router.get('/edit/:id',  authHandler.adminAuthHandler, (req,res)=>{
     .then((dataRoute)=>{
       res.render('./routes/edit',{
         dataRoute : dataRoute,
-        err       : err
+        err       : err,
+        session : req.session
       })
     })
 
