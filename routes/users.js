@@ -8,9 +8,9 @@ const Transaction = models.Transaction
 const Route = models.Route
 const passwordAuth = require ('../helpers/passwordAuth')
 const adminAuth = require('../helpers/adminAuth')
+const convertTime = require('../helpers/convertTime')
 
-
-// --------------- READ --------------------------
+// ------------------- READ --------------------------
 router.get('/', (req, res)=> {
   let err;
   if (req.query && req.query.hasOwnProperty('err')){
@@ -89,6 +89,7 @@ router.get('/edit/:id', (req, res) => {
 router.post('/edit/:id', (req, res) => {
   let userId = req.params.id
   let newUser = {
+    id        : userId,
     email     : req.body.email,
     password1 : req.body.password1,
     password2 : req.body.password2,
@@ -142,7 +143,56 @@ router.get('/delete/:id', (req, res) => {
   .catch((err) => {
     res.redirect(`/?err=${err.message}`);
   })
+})
 
+// ------------------- Sign Up -----------------------
+router.get('/signup', (req, res) => {
+  let err;
+  if (req.query && req.query.hasOwnProperty('err')){
+    err = req.query.err
+  }
+  res.render('./users/users_signup', {
+    err: err
+  })
+})
+
+router.post('/signup', (req, res) => {
+  let newUser = {
+    email     : req.body.email,
+    password1 : req.body.password1,
+    password2 : req.body.password2,
+    role      : req.body.role,
+    poin      : req.body.poin
+  }
+  if (newUser.password1 === newUser.password2){
+    newUser.password = newUser.password1;
+    if(newUser.poin == ''){
+      newUser.poin = null;
+    }
+    User.create(newUser)
+    .then(() => {
+      res.redirect('/')
+    })
+    .catch((err) => {
+      res.redirect(`/users/signup/?err=${err.message}`);
+    })
+  } else {
+    res.redirect(`/users/signup/?err=Password mismatch, please repeat data entry!`);
+  }
+})
+
+
+// -------------------  Login ------------------------
+
+router.get('/login', (req, res) => {
+  let err;
+  if (req.query && req.query.hasOwnProperty('err')){
+    err = req.query.err
+  }
+  res.render('./users/users_login', {
+    err: err
+  })
+})
 
 router.post('/login', (req, res) => {
   let plainPassword = req.body.password
@@ -162,6 +212,10 @@ router.post('/login', (req, res) => {
     res.redirect(`/users/login/?err=${err.message}`);
   })
 })
+
+//------------------- USERPAGE ----------------
+router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
+  res.send(req.session.user)
 
 })
 
@@ -210,6 +264,7 @@ router.get('/:id/booktrain', (req, res) => {
     res.render('./users/users_booktrain',{
       dataUser: dataUser,
       dataTrainRoute: dataTrainRoute,
+      convertTime: convertTime
     })
   })
 })
