@@ -4,13 +4,16 @@ const saltRounds = 10;
 
 module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define('User', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true 
+    },
     email   : {
       type     : DataTypes.STRING,
       validate : {
         notEmpty : true,
         isEmail : true,
         isUnique: function (value, next){
-          console.log('is unique >>> ', value, this)
           const Op = sequelize.Op
           User.findAll({
             where: {
@@ -19,7 +22,6 @@ module.exports = function (sequelize, DataTypes) {
             }
           })
           .then((dataUsers)=>{
-            // console.log('----->> ',dataUsers, userId)
             if (dataUsers.length > 0){
               return next('E-mail already in use')
             } else {
@@ -37,11 +39,9 @@ module.exports = function (sequelize, DataTypes) {
     poin    : DataTypes.INTEGER
   });
 
-  User.beforeCreate((user, options) => {
+  User.afterValidate((user, options) => {
     return bcrypt.hash(user.password, saltRounds)
     .then((hashPassword) => {
-
-      console.log('ini hash -------->> ',hashPassword)
       user.password = hashPassword
     });
   });

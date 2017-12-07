@@ -45,6 +45,7 @@
         </tr>
         <%trainRoutes.forEach((trainRoute)=>{%>
         <tr>
+          
           <td><%=trainRoute.Train.trainName%></td>
           <td><%=trainRoute.Route.departure%></td>
           <td><%=trainRoute.Route.arrival%></td>
@@ -52,7 +53,7 @@
           <td><%=trainRoute.convertTime(trainRoute.arrivalTime)%></td>
           <td><%=trainRoute.quota%></td>
           <td><%=trainRoute.price%></td>
-          <td>Book</td>
+          <td><a href="/users/<%=trainRoute.id%>/booktrain">Book this trip</a></td>
         </tr>
         <%})%>
 

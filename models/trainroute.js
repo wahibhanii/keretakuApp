@@ -2,6 +2,10 @@
 const convertTime = require('../helpers/convertTime');
 module.exports = (sequelize, DataTypes) => {
   var TrainRoute = sequelize.define('TrainRoute', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true 
+    },
     RouteId: DataTypes.INTEGER,
     TrainId: DataTypes.INTEGER,
     departureTime: DataTypes.DATE,
@@ -10,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.INTEGER
   });
 
-  TrainRoute.associate = (models) => {
-    TrainRoute.belongsToMany(models.User, {through: 'Transaction', foreignKey: 'TrainRouteId', otherKey: 'UserId'})
-  }
+  
   TrainRoute.associate = function (models) {
+    TrainRoute.belongsToMany(models.User, {through: 'Transaction', foreignKey: 'TrainRouteId', otherKey: 'UserId'})
+    TrainRoute.hasMany(models.Transaction)
     TrainRoute.belongsTo(models.Route);
     TrainRoute.belongsTo(models.Train)
   };

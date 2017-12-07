@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Book Ticket </h1>
+    <h3><a href="/trains/schedule">Back to List</a></h3>
+    <h4>Trip Information</h4>
+    <form method="POST", action="/users/<%=dataTrainRoute.id%>/booktrain">
+      <table border="1" style="text-align: left">
+            <tr>
+                <th>User E-mail</th>
+                <td name="userEmail" value="<%=dataUser.email%>"><%=dataUser.email%></td>
+              </tr>
+            <tr>
+              <th>Trip Id</th>
+              <td><%=dataTrainRoute.id%></td>
+            </tr>
+            <tr>
+              <th>Train Name</th>
+              <td><%=dataTrainRoute.Train.trainName%></td>
+            </tr>
+            <tr>
+              <th>From</th>
+              <td><%=dataTrainRoute.Route.departure%></td>
+            </tr>
+            <tr>
+              <th>To</th>
+              <td><%=dataTrainRoute.Route.arrival%></td>
+            </tr>
+            <tr>
+              <th>Departure Time</th>
+              <td><%=dataTrainRoute.departureTime%></td>
+            </tr>
+            <tr>
+              <th>Reserve Seat</th>
+              <td>
+                <select name="reservedSeat">
+                  <option name="reservedSeat" value=1 >1</option>
+                  <option name="reservedSeat" value=2 >2</option>
+                  <option name="reservedSeat" value=3 >3</option>
+                  <option name="reservedSeat" value=4 >4</option>
+                </select>
+                Person
+              </td>
+            </tr>
+            <tr>
+              <th>Select date</th>
+              <td><input name="departureDate" placeholder="YYYY-MM-DD"></td>
+            </tr>
+            <tr><td><input type="submit" value="Book Train!"></td></tr>
+      </table>
+      <br>
+    </form>
+    
+  </body>
+</html>
