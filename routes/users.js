@@ -205,8 +205,12 @@ router.post('/login', (req, res) => {
         email   : dataUser.email,
         role    : dataUser.role
       }
+      let loginMessage = 'You have logged in!'
       req.session.user = newSession
-      res.redirect('/users/userpage/')
+      // res.redirect('/')
+      res.render('./index',{
+        loginMessage : 'You have logged in!'
+      })
     }
   })
   .catch((err) => {

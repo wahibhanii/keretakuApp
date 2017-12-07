@@ -5,7 +5,8 @@
     <title>Edit Route</title>
   </head>
   <body>
-    <a href="/routes">back</a>
+    <%include ../partials/style%>
+    <%include ../partials/navigation%>
     <h1>Edit Route</h1>
       <form action="/routes/edit/<%=dataRoute.id%>" method="post">
         Departure:<br>

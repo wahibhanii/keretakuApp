@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const models = require('../models')
 const Route = models.Route
+const authHandler = require('../helpers/adminAuth');
 
 //show all route
 router.get('/', (req,res)=>{
@@ -14,14 +15,14 @@ router.get('/', (req,res)=>{
 })
 
 //add route
-router.get('/add', (req,res)=>{
+router.get('/add', authHandler.adminAuthHandler,(req,res)=>{
   let err = req.query.err;
   res.render('./routes/add',{
     err : err
   })
 })
 
-router.post('/add', (req,res)=>{
+router.post('/add', authHandler.adminAuthHandler, (req,res)=>{
   Route.create(
     {departure : req.body.departure,
      arrival   : req.body.arrival
@@ -34,7 +35,7 @@ router.post('/add', (req,res)=>{
 })
 
 //edit route
-router.get('/edit/:id', (req,res)=>{
+router.get('/edit/:id',  authHandler.adminAuthHandler, (req,res)=>{
   let err;
     if(req.query && req.query.hasOwnProperty('err')){
       err = req.query.err
@@ -49,7 +50,7 @@ router.get('/edit/:id', (req,res)=>{
 
 })
 
-router.post('/edit/:id', (req,res)=>{
+router.post('/edit/:id',  authHandler.adminAuthHandler,(req,res)=>{
   if(req.body.departure !== '' || req.body.arrival !== ''){
     Route.update({
       departure : req.body.departure,
@@ -65,7 +66,7 @@ router.post('/edit/:id', (req,res)=>{
 })
 
 //delete
-router.get('/delete/:id', (req,res)=>{
+router.get('/delete/:id',  authHandler.adminAuthHandler,(req,res)=>{
   Route.destroy({where: {id : req.params.id}})
   .then(()=>{
     res.redirect('/routes')

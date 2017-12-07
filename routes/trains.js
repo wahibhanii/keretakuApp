@@ -4,8 +4,9 @@ const models = require('../models')
 const Train = models.Train
 const TrainRoute = models.TrainRoute
 const Route = models.Route
+const adminAuth = require('../helpers/adminAuth');
 //---------------- ALL TRAIN ---------------------
-router.get('/', (req,res)=>{
+router.get('/', adminAuth.adminAuthHandler,(req,res)=>{
   Train.findAll()
   .then((dataTrains)=>{
     res.render('./trains/train', {
@@ -15,8 +16,9 @@ router.get('/', (req,res)=>{
 })
 
 //----------------- ADD TRAIN ---------------------
-router.get('/add', (req,res)=>{
+router.get('/add', adminAuth.adminAuthHandler,(req,res)=>{
   let err;
+  console.log(req.session);
   if(req.query && req.query.hasOwnProperty('err')){
     err = req.query.err
   }
@@ -25,7 +27,7 @@ router.get('/add', (req,res)=>{
   })
 })
 
-router.post('/add', (req,res)=>{
+router.post('/add', adminAuth.adminAuthHandler, (req,res)=>{
     if(req.body.trainName !== ''){
     Train.create(
       {trainName : req.body.trainName}
@@ -39,7 +41,7 @@ router.post('/add', (req,res)=>{
 
 
 //---------------- EDIT TRAIN ----------------------
-router.get('/edit/:id', (req,res)=>{
+router.get('/edit/:id', adminAuth.adminAuthHandler,(req,res)=>{
   let err;
   if(req.query && req.query.hasOwnProperty('err')){
     err = req.query.err
@@ -53,7 +55,7 @@ router.get('/edit/:id', (req,res)=>{
   })
 })
 
-router.post('/edit/:id', (req,res)=>{
+router.post('/edit/:id', adminAuth.adminAuthHandler,(req,res)=>{
   if(req.body.trainName !== ''){
     Train.update({
       trainName : req.body.trainName},
@@ -67,7 +69,7 @@ router.post('/edit/:id', (req,res)=>{
 })
 
 //-------------------- DELETE ----------------------
-router.get('/delete/:id',(req,res)=>{
+router.get('/delete/:id',adminAuth.adminAuthHandler,(req,res)=>{
   Train.destroy({where: {id : req.params.id}})
   .then(()=>{
     res.redirect('/trains')
@@ -75,7 +77,8 @@ router.get('/delete/:id',(req,res)=>{
 })
 
 //------------------- SCHEDULE ---------------------
-router.get('/schedule',(req,res)=>{
+router.get('/schedule',adminAuth.adminAuthHandler,(req,res)=>{
+  console.log('*************',req.session.user.role);
   let findDeparture = '';
   let findArrival = '';
   let objWhere = {}
@@ -89,45 +92,57 @@ router.get('/schedule',(req,res)=>{
       }
   }
 
-  Route.findAll({
-    where: objWhere
-  })
-  .then(dataRoutes=>{
-
-    //----------------------- SEARCH UNIQUE -----------------------------//
+  Route.findAll()
+  .then((cityRoute)=>{
+    // console.log('==============',cityRoute.length);
+      //----------------------- SEARCH UNIQUE -----------------------------//
     let cityArr = [];
-    dataRoutes.forEach((dataRoute)=>{
-      cityArr.push(dataRoute.departure)
+    cityRoute.forEach((cityRoute)=>{
+      cityArr.push(cityRoute.departure)
+      cityArr.push(cityRoute.arrival)
     })
 
     var cityUnique = cityArr.filter((value, index, self)=> {
       return self.indexOf(value) === index;
     });
-    //-------------------------------------------------------------------//
-              //-- BUAT CARI RUTE SESUAI FILTER --
-    let searchRouteId = {}
-    if(req.query && req.query.hasOwnProperty('filter')){
-      searchRouteId.RouteId = dataRoutes[0].id
-      }
-    TrainRoute.findAll({ //cari train route
-      where : searchRouteId,
-      include: [
-        {model: Route},
-        {model: Train}
-      ]}
-    )
-      .then((trainRoutes)=>{
-        res.render('./trains/schedule',{
-          trainRoutes : trainRoutes,
-          cityUnique  : cityUnique,
-          err         : err
+    //----------------------- SEARCH UNIQUE -----------------------------//
+
+    Route.findAll({
+      where: objWhere
+    })
+    .then(dataRoutes=>{
+                //-- BUAT CARI RUTE SESUAI FILTER --
+      let searchRouteId = {}
+      if(req.query && req.query.hasOwnProperty('filter')){
+          if(dataRoutes.length == cityRoute.length){ //RouteId not found
+            err = 'Routes are not available yet'
+          } else {
+          searchRouteId.RouteId = dataRoutes[0].id
+          }
+        }
+      TrainRoute.findAll({ //cari train route
+        where : searchRouteId,
+        include: [
+          {model: Route},
+          {model: Train}
+        ]}
+      ).then((trainRoutes)=>{
+        // console.log(trainRoutes);
+        if (trainRoutes.length == 0) { //RouteId belum diassign ke TrainRoutes
+          err = 'Routes are not found'
+        }
+          res.render('./trains/schedule',{
+            trainRoutes : trainRoutes,
+            cityUnique  : cityUnique,
+            err         : err
+          })
         })
-      })
-      .catch(err=>{
-        res.redirect(`/schedule/?err=${err.message}`)
-      })
-    }).catch(err=>{
-    res.send('not found')
+        .catch(err=>{
+          res.redirect(`/schedule/?err=${err.message}`)
+        })
+      }).catch(err=>{
+      res.send('not found')
+    })
   })
 })
 
