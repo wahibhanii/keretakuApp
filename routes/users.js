@@ -1,14 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const models = require('../models')
-const User = models.User
-const TrainRoute = models.TrainRoute
-const Train = models.Train
-const Transaction = models.Transaction
-const Route = models.Route
-const passwordAuth = require ('../helpers/passwordAuth')
-const adminAuth = require('../helpers/adminAuth')
-const convertTime = require('../helpers/convertTime')
+const express         = require('express');
+const router          = express.Router();
+const models          = require('../models')
+const User            = models.User
+const TrainRoute      = models.TrainRoute
+const Train           = models.Train
+const Transaction     = models.Transaction
+const Route           = models.Route
+const passwordAuth    = require ('../helpers/passwordAuth')
+const adminAuth       = require('../helpers/adminAuth')
+const convertTime     = require('../helpers/convertTime')
+const getTripTime     = require('../helpers/getTripTime')
 
 // ------------------- READ --------------------------
 router.get('/', (req, res)=> {
@@ -246,10 +247,41 @@ router.get('/:id/transactions/', (req, res) => {
 
 //-------------------- BOOK TRAIN / CREATE TRANSACTION -----------------------
 
-router.get('/:id/booktrain', (req, res) => {
+// router.get('/:id/booktrain', (req, res) => {
+//   // booking confirmation and checkout, choose passenger number
+//   let userId = 15 // nanti ganti req session
+//   let trainRouteId = req.params.id;
+//   let dataUser;
+//   let dataTrainRoute;
+//   User.findOne({
+//     where: {id: userId}
+//   })
+//   .then((queryUser) => {
+//     dataUser = queryUser
+//     return TrainRoute.findOne({
+//       where: {id: trainRouteId},
+//       include: [{model: Train}, {model: Route}]
+//     })
+//   })
+//   .then((queryTrainRoute) => {
+//     dataTrainRoute = queryTrainRoute;
+//     // res.send(dataTrainRoute)
+//     res.render('./users/users_booktrain',{
+//       dataUser: dataUser,
+//       dataTrainRoute: dataTrainRoute,
+//       convertTime: convertTime
+//     })
+//   })
+// })
+
+
+router.post('/booktrain', (req, res) => {
+  let err
   // booking confirmation and checkout, choose passenger number
   let userId = 15 // nanti ganti req session
-  let trainRouteId = req.params.id;
+  let trainRouteId = req.body.trainRouteId;
+  let reservedSeat = Number(req.body.reservedSeat)
+  let departureDateTime = getTripTime(req.body.departureDate,req.body.departureTime)
   let dataUser;
   let dataTrainRoute;
   User.findOne({
@@ -259,48 +291,57 @@ router.get('/:id/booktrain', (req, res) => {
     dataUser = queryUser
     return TrainRoute.findOne({
       where: {id: trainRouteId},
-      include: [{model: Train}, {model: Route}]
+      include: [{model: Train}, 
+        {model: Route}, 
+        {model: Transaction, 
+        }
+      ]
     })
   })
   .then((queryTrainRoute) => {
     dataTrainRoute = queryTrainRoute;
-    // res.send(dataTrainRoute)
-    res.render('./users/users_booktrain',{
-      dataUser: dataUser,
-      dataTrainRoute: dataTrainRoute,
-      convertTime: convertTime
+    // console.log(typeof dataTrainRoute.Transactions[2].departureTime)
+    let reserved=0;
+    let arrCountReserved = dataTrainRoute.Transactions.map(element => {
+      return new Promise( (resolve, reject) => {
+        if (element.departureTime.toISOString() == departureDateTime.toISOString() ){
+          reserved+= element.seatReserved
+        }
+        resolve(reserved)
+      })
+    });
+    Promise.all(arrCountReserved)
+    .then(()=>{
+      if (reservedSeat > dataTrainRoute.quota ){
+        err = 'Reserved seat is more than seats avaliable!'
+      }
+      console.log(err, 'ini error')
+      res.render('./users/users_booktrain',{
+        dataUser: dataUser,
+        dataTrainRoute: dataTrainRoute,
+        convertTime: convertTime,
+        seatLeft : (dataTrainRoute.quota - reserved),
+        reservedSeat: reservedSeat,
+        departureDateTime : departureDateTime,
+        err: err
+      })
     })
   })
 })
 
-
-router.post('/:id/booktrain', (req, res) => {
+// BookTrain Success
+router.post('/booktrain/success', (req, res) => {
   // res.send(req.body)
-  // booking confirmation and checkout, choose passenger number
-  let userId = 15 // nanti ganti req session
-  let trainRouteId = req.params.id;
-  let dataUser;
-  let dataTrainRoute;
-  User.findOne({
-    where: {id: userId}
+  let newTransaction = {
+    TrainRouteId: req.body.trainRouteId,
+    UserId: req.body.userId,
+    departureTime: req.body.departureTime,
+    seatReserved: req.body.seatReserved
+  }
+  Transaction.create(newTransaction)
+  .then(()=>{
+    
   })
-  .then((queryUser) => {
-    dataUser = queryUser
-    return TrainRoute.findOne({
-      where: {id: trainRouteId},
-      include: [{model: Train}, {model: Route}, {model: Transaction}]
-    })
-  })
-  .then((queryTrainRoute) => {
-    dataTrainRoute = queryTrainRoute;
-    res.send(dataTrainRoute)
-    res.render('./users/users_booktrain',{
-      dataUser: dataUser,
-      dataTrainRoute: dataTrainRoute,
-    })
-  })
-
-  //res redirect my transactions
 })
 
 
