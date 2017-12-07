@@ -32,7 +32,6 @@
           <br>
           <input type="submit" value="Submit">
     </form>
-<<<<<<< HEAD
     <br>
       <table>
         <tr>
@@ -73,33 +72,6 @@
           </td>
         </tr>
         <%})%>
-=======
-      <br>
-        <table>
-          <tr>
-            <th>Train Name</th>
-            <th>Departure</th>
-            <th>Arrival</th>
-            <th>Departure Time</th>
-            <th>Arrival Time</th>
-            <th>quota</th>
-            <th>price</th>
-            <th></th>
-          </tr>
-          <%trainRoutes.forEach((trainRoute)=>{%>
-          <tr>
-
-            <td><%=trainRoute.Train.trainName%></td>
-            <td><%=trainRoute.Route.departure%></td>
-            <td><%=trainRoute.Route.arrival%></td>
-            <td><%=trainRoute.convertTime(trainRoute.departureTime)%></td>
-            <td><%=trainRoute.convertTime(trainRoute.arrivalTime)%></td>
-            <td><%=trainRoute.quota%></td>
-            <td><%=trainRoute.price%></td>
-            <td><a href="/users/<%=trainRoute.id%>/booktrain">Book this trip</a></td>
-          </tr>
-          <%})%>
->>>>>>> 7ea967a2c6b5cfc277a9b66cc2b77a391a66ea63
 
         </table>
       </fieldset>
