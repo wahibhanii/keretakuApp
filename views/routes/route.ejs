@@ -21,7 +21,7 @@
           <td><%=route.departure%></td>
           <td><%=route.arrival%></td>
           <td><a href ="/routes/edit/<%=route.id%>">Edit</a> |
-            <a href="/routes/delete/<%=route.id%>">Delete</a></td>
+            <a href="/routes/delete/<%=route.id%>" onclick = "return confirm ('delete this route?')">Delete</a></td>
         </tr>
       <%})%>
     </table>

@@ -16,38 +16,58 @@ router.get('/', (req,res)=>{
 
 //----------------- ADD TRAIN ---------------------
 router.get('/add', (req,res)=>{
-  res.render('./trains/add')
-})
-
-router.post('/add', (req,res)=>{
-  Train.create(
-    {trainName : req.body.trainName}
-  ).then(()=>{
-    res.redirect('/trains')
+  let err;
+  if(req.query && req.query.hasOwnProperty('err')){
+    err = req.query.err
+  }
+  res.render('./trains/add',{
+    err:err
   })
 })
 
+router.post('/add', (req,res)=>{
+    if(req.body.trainName !== ''){
+    Train.create(
+      {trainName : req.body.trainName}
+    ).then(()=>{
+      res.redirect('/trains')
+    })
+  } else {
+    res.redirect(`/trains/add/?err=Train name can not be empty!`)
+  }
+})
+
+
 //---------------- EDIT TRAIN ----------------------
 router.get('/edit/:id', (req,res)=>{
+  let err;
+  if(req.query && req.query.hasOwnProperty('err')){
+    err = req.query.err
+  }
   Train.findById(req.params.id)
   .then((dataTrain)=>{
     res.render('./trains/edit',{
-      dataTrain : dataTrain
+      dataTrain : dataTrain,
+      err       : err
     })
   })
 })
 
 router.post('/edit/:id', (req,res)=>{
-  Train.update({
-    trainName : req.body.trainName},
-    {where: {id : req.params.id}})
-    .then(()=>{
-    res.redirect('/trains')
-  })
+  if(req.body.trainName !== ''){
+    Train.update({
+      trainName : req.body.trainName},
+      {where: {id : req.params.id}})
+      .then(()=>{
+      res.redirect('/trains')
+    })
+  } else {
+    res.redirect(`/trains/edit/${req.params.id}/?err=Train name cannot be empty!`)
+  }
 })
 
 //-------------------- DELETE ----------------------
-router.get('/delete/:id', (req,res)=>{
+router.get('/delete/:id',(req,res)=>{
   Train.destroy({where: {id : req.params.id}})
   .then(()=>{
     res.redirect('/trains')
@@ -55,18 +75,20 @@ router.get('/delete/:id', (req,res)=>{
 })
 
 //------------------- SCHEDULE ---------------------
-router.get('/schedule', (req,res)=>{
+router.get('/schedule',(req,res)=>{
   let findDeparture = '';
   let findArrival = '';
   let objWhere = {}
+  let err = false;
   if(req.query && req.query.hasOwnProperty('filter')){
     findDeparture = req.query.filter.split('-')[0]
     findArrival   = req.query.filter.split('-')[1]
-    objWhere.departure = findDeparture
-    objWhere.arrival = findArrival
+      if(findDeparture !== findArrival){
+      objWhere.departure = findDeparture
+      objWhere.arrival = findArrival
+      }
   }
 
-  let err;
   Route.findAll({
     where: objWhere
   })
@@ -97,14 +119,15 @@ router.get('/schedule', (req,res)=>{
       .then((trainRoutes)=>{
         res.render('./trains/schedule',{
           trainRoutes : trainRoutes,
-          cityUnique  : cityUnique
+          cityUnique  : cityUnique,
+          err         : err
         })
       })
       .catch(err=>{
         res.redirect(`/schedule/?err=${err.message}`)
       })
     }).catch(err=>{
-    res.send(err)
+    res.send('not found')
   })
 })
 
