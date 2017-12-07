@@ -8,6 +8,7 @@ const Transaction = models.Transaction
 const Route = models.Route
 const passwordAuth = require ('../helpers/passwordAuth')
 const adminAuth = require('../helpers/adminAuth')
+const convertTime = require('../helpers/convertTime')
 
 // ------------------- READ --------------------------
 router.get('/', (req, res)=> {
@@ -56,7 +57,7 @@ router.post('/add', (req, res) => {
       res.redirect('/users')
     })
     .catch((err) => {
-      res.redirect(`/users/add/?err=${err.message}`);
+      res.redirect(`/add/?err=${err.message}`);
     })
   } else {
     res.redirect(`/users/add/?err=Password mismatch, please repeat data entry!`);
@@ -82,6 +83,7 @@ router.get('/edit/:id', (req, res) => {
   .catch((err) => {
     res.redirect(`/add/?err=${err.message}`);
   })
+
 })
 
 router.post('/edit/:id', (req, res) => {
@@ -109,7 +111,7 @@ router.post('/edit/:id', (req, res) => {
       res.redirect('/users')
     })
     .catch((err) => {
-      res.redirect(`/users/edit/${userId}/?err=${err.message}`);
+      res.redirect(`/edit/${userId}/?err=${err.message}`);
     })
   } else {
     res.redirect(`/users/edit/${userId}/?err=Password mismatch, please repeat data entry!`);
@@ -118,6 +120,7 @@ router.post('/edit/:id', (req, res) => {
 
 
 // ------------------- DESTROY/DELETE -------------------
+
 router.get('/delete/:id', (req, res) => {
   let userId = req.params.id;
   let dataUser;
@@ -261,10 +264,11 @@ router.get('/:id/booktrain', (req, res) => {
     res.render('./users/users_booktrain',{
       dataUser: dataUser,
       dataTrainRoute: dataTrainRoute,
+      convertTime: convertTime
     })
   })
-
 })
+
 
 router.post('/:id/booktrain', (req, res) => {
   // res.send(req.body)

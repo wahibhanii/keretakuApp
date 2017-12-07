@@ -7,21 +7,23 @@
   <h3><a href="/trains/schedule">back</a>
   <h1>Train Schedule</h1>
   <body>
-
+    <%if(err){%>
+    <h2><%=err%></h2>
+    <%}%>
     <form action="/trains/schedule" method=post>
       <fieldset>
         <legend>Order Ticket:</legend>
         <br>
         <select required name="departure">
-          <option>---Departure---</option>
-            <%for(var i = 0; i < cityUnique.length-1; i++){%>
+          <option value="" disabled selected>Departure</option>
+            <%for(var i = 0; i < cityUnique.length; i++){%>
               <option value="<%=cityUnique[i]%>"><%=cityUnique[i]%></option>
             <%}%>
         </select><br>
         <br>
         <select required name="arrival">
-          <option>---Arrival---</option>
-            <%for(var i = 0; i < cityUnique.length-1; i++){%>
+          <option value="" disabled selected>Arrival</option>
+            <%for(var i = 0; i < cityUnique.length; i++){%>
               <option value="<%=cityUnique[i]%>"><%=cityUnique[i]%></option>
             <%}%>
         </select><br>
@@ -47,8 +49,8 @@
           <td><%=trainRoute.Train.trainName%></td>
           <td><%=trainRoute.Route.departure%></td>
           <td><%=trainRoute.Route.arrival%></td>
-          <td><%=trainRoute.departureTime%></td>
-          <td><%=trainRoute.arrivalTime%></td>
+          <td><%=trainRoute.convertTime(trainRoute.departureTime)%></td>
+          <td><%=trainRoute.convertTime(trainRoute.arrivalTime)%></td>
           <td><%=trainRoute.quota%></td>
           <td><%=trainRoute.price%></td>
           <td><a href="/users/<%=trainRoute.id%>/booktrain">Book this trip</a></td>
