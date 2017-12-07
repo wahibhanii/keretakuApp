@@ -5,6 +5,8 @@
     <title>Add Train</title>
   </head>
   <body>
+    <%include ../partials/navigation%>
+    <%include ../partials/style%>
     <h3><a href="/trains">back</a></h3>
     <h1>Add Train</h1>
     <form action="/trains/add" method="post">
@@ -16,6 +18,5 @@
     <% if(err) {%>
       <tr><a  style="color:red" ><%=err%></a></tr><br>
     <%}%>
-
   </body>
 </html>

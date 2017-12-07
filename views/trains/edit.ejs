@@ -5,6 +5,8 @@
     <title>Edit Train</title>
   </head>
   <body>
+    <%include ../partials/navigation%>
+    <%include ../partials/style%>
     <a href="/trains">back</a>
     <h1>Edit Train</h1>
       <form action="/trains/edit/<%=dataTrain.id%>" method="post">

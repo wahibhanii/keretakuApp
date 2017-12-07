@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Schedule</title>
   </head>
+  <%include ../partials/navigation%>
+  <%include ../partials/style%>
   <h3><a href="/trains/schedule">back</a>
   <h1>Train Schedule</h1>
   <body>
@@ -12,51 +14,51 @@
     <%}%>
     <form action="/trains/schedule" method=post>
       <fieldset>
-        <legend>Order Ticket:</legend>
-        <br>
-        <select required name="departure">
-          <option value="" disabled selected>Departure</option>
-            <%for(var i = 0; i < cityUnique.length; i++){%>
-              <option value="<%=cityUnique[i]%>"><%=cityUnique[i]%></option>
-            <%}%>
-        </select><br>
-        <br>
-        <select required name="arrival">
-          <option value="" disabled selected>Arrival</option>
-            <%for(var i = 0; i < cityUnique.length; i++){%>
-              <option value="<%=cityUnique[i]%>"><%=cityUnique[i]%></option>
-            <%}%>
-        </select><br>
-        <br>
-        <input type="submit" value="Submit">
-      </fieldset>
+          <legend>Find Train:</legend>
+          <br>
+          <select required name="departure">
+            <option value="" disabled selected>Departure</option>
+              <%for(var i = 0; i < cityUnique.length; i++){%>
+                <option value="<%=cityUnique[i]%>"><%=cityUnique[i]%></option>
+              <%}%>
+          </select><br>
+          <br>
+          <select required name="arrival">
+            <option value="" disabled selected>Arrival</option>
+              <%for(var i = 0; i < cityUnique.length; i++){%>
+                <option value="<%=cityUnique[i]%>"><%=cityUnique[i]%></option>
+              <%}%>
+          </select><br>
+          <br>
+          <input type="submit" value="Submit">
     </form>
-    <br>
-      <table>
-        <tr>
-          <th>Train Name</th>
-          <th>Departure</th>
-          <th>Arrival</th>
-          <th>Departure Time</th>
-          <th>Arrival Time</th>
-          <th>quota</th>
-          <th>price</th>
-          <th></th>
-        </tr>
-        <%trainRoutes.forEach((trainRoute)=>{%>
-        <tr>
-          
-          <td><%=trainRoute.Train.trainName%></td>
-          <td><%=trainRoute.Route.departure%></td>
-          <td><%=trainRoute.Route.arrival%></td>
-          <td><%=trainRoute.convertTime(trainRoute.departureTime)%></td>
-          <td><%=trainRoute.convertTime(trainRoute.arrivalTime)%></td>
-          <td><%=trainRoute.quota%></td>
-          <td><%=trainRoute.price%></td>
-          <td><a href="/users/<%=trainRoute.id%>/booktrain">Book this trip</a></td>
-        </tr>
-        <%})%>
+      <br>
+        <table>
+          <tr>
+            <th>Train Name</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Departure Time</th>
+            <th>Arrival Time</th>
+            <th>quota</th>
+            <th>price</th>
+            <th></th>
+          </tr>
+          <%trainRoutes.forEach((trainRoute)=>{%>
+          <tr>
 
-      </table>
+            <td><%=trainRoute.Train.trainName%></td>
+            <td><%=trainRoute.Route.departure%></td>
+            <td><%=trainRoute.Route.arrival%></td>
+            <td><%=trainRoute.convertTime(trainRoute.departureTime)%></td>
+            <td><%=trainRoute.convertTime(trainRoute.arrivalTime)%></td>
+            <td><%=trainRoute.quota%></td>
+            <td><%=trainRoute.price%></td>
+            <td><a href="/users/<%=trainRoute.id%>/booktrain">Book this trip</a></td>
+          </tr>
+          <%})%>
+
+        </table>
+      </fieldset>
   </body>
 </html>

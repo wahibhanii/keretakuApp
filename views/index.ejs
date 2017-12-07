@@ -1,12 +1,19 @@
 <!DOCTYPE html>
+
 <html>
 
   <body>
-    <ul>
-      <li><a href="/users">Users</a></li>
-      <li><a href="/routes">Routes</a></li>
-      <li><a href="/trains">Trains</li>
-    </ul>
+    <%include ./partials/navigation%>
+    <%include ./partials/style%>
+    <br>
+    <h1>Welcome in KeretakuApp</h1>
+      <%if(loginMessage){%>
+        <h3 style="color:red"><%=loginMessage%></h3>
+      <%}%>
+    <h3><a href="users/login">Login</a></h3>
+    <h3><a href="users/signup">Sign Up</a></h3>
+
+
   </body>
 
 </html>

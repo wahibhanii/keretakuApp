@@ -5,6 +5,7 @@ const session = require('express-session')
 const trains = require('./routes/trains');
 const users = require('./routes/users');
 const routes = require('./routes/routes');
+const index = require('./routes/index');
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
@@ -14,9 +15,7 @@ app.use(session({
   })
 )
 
-app.get('/', function(req, res){
-  res.render('index')
-})
+app.get('/', index)
 
 app.use('/trains', trains)
 app.use('/routes', routes)

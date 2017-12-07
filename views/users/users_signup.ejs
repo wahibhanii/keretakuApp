@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <%include ../partials/style%>
+    <%include ../partials/navigation%>
     <h1>Sign Up</h1>
     <h3><a href="/">Back to Homepage</a></h3>
     <form name="signup" method="POST" action="/users/signup">
@@ -17,7 +19,7 @@
             <option name="role" value="admin" >Admin</option>
           </select>
         </tr><br>
-        <% if(err) {%>  
+        <% if(err) {%>
           <tr><a  style="color:red" ><%=err%></a></tr><br>
         <%}%>
         <tr><input type="submit" value="Sign Up"></tr><br>
