@@ -219,6 +219,17 @@ router.post('/login', (req, res) => {
   })
 })
 
+router.get('/logout',(req,res)=>{
+  req.session.destroy((err)=>{
+    if(err){
+      res.send(err)
+    } else {
+      res.redirect('/')
+    }
+  });
+})
+
+
 //------------------- USERPAGE ----------------
 router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
   res.send(req.session.user)

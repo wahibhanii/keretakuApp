@@ -22,4 +22,4 @@ app.use('/routes', routes)
 app.use('/users', users)
 
 
-app.listen(4000)
+app.listen(process.env.PORT || '3000')
