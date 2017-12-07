@@ -6,7 +6,7 @@
     <h1>Book Ticket </h1>
     <h3><a href="/trains/schedule">Back to List</a></h3>
     <h4>Trip Information</h4>
-    <form method="POST", action="/users/<%=dataTrainRoute.id%>/booktrain">
+    <form method="POST", action="/users/booktrain/success">
       <table border="1" style="text-align: left">
             <tr>
                 <th>User E-mail</th>
@@ -33,22 +33,24 @@
               <td><%= convertTime(dataTrainRoute.departureTime)%></td>
             </tr>
             <tr>
-              <th>Reserve Seat</th>
-              <td>
-                <select name="reservedSeat">
-                  <option name="reservedSeat" value=1 >1</option>
-                  <option name="reservedSeat" value=2 >2</option>
-                  <option name="reservedSeat" value=3 >3</option>
-                  <option name="reservedSeat" value=4 >4</option>
-                </select>
-                Person
-              </td>
+              <th>Seat Left</th>
+              <td><%= seatLeft%></td>
             </tr>
             <tr>
-              <th>Select date</th>
-              <td><input name="departureDate" placeholder="YYYY-MM-DD"></td>
+              <th>Reserved Seat</th>
+              <td><%= reservedSeat%></td>
             </tr>
-            <tr><td><input type="submit" value="Book Train!"></td></tr>
+            <tr>
+                <input type="text" name="trainRouteId" value="<%=dataTrainRoute.id%>" hidden>
+                <input type="text" name="userId" value="<%=dataUser.id%>" hidden>
+                <input type="text" name="departureTime" value="<%=departureDateTime%>" hidden>
+                <input type="text" name="seatReserved" value="<%=reservedSeat%>" hidden>
+            </tr>
+            <% if (err == undefined) {%>
+              <tr><td colspan="2"><input type="submit" value="Book Train!"></td></tr>
+            <%} else {%>
+              <tr><td colspan="2"><%=err%> <a href="/trains/schedule">Back To Train Schedule</a></td></tr>
+            <%}%>
       </table>
       <br>
     </form>

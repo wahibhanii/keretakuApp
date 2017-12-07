@@ -6,7 +6,8 @@ module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true 
+      primaryKey: true,
+      autoIncrement: true
     },
     email   : {
       type     : DataTypes.STRING,
@@ -45,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
       user.password = hashPassword
     });
   });
-  
+
   User.associate = (models) => {
     User.belongsToMany(models.TrainRoute, {through: 'Transaction', foreignKey: 'UserId', otherKey: 'TrainRouteId'})
     User.hasMany(models.Transaction)

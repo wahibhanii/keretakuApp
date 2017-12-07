@@ -32,31 +32,46 @@
           <br>
           <input type="submit" value="Submit">
     </form>
-      <br>
-        <table>
-          <tr>
-            <th>Train Name</th>
-            <th>Departure</th>
-            <th>Arrival</th>
-            <th>Departure Time</th>
-            <th>Arrival Time</th>
-            <th>quota</th>
-            <th>price</th>
-            <th></th>
-          </tr>
-          <%trainRoutes.forEach((trainRoute)=>{%>
-          <tr>
+    <br>
+      <table>
+        <tr>
+          <th>Train Name</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Departure Time</th>
+          <th>Arrival Time</th>
+          <th>quota</th>
+          <th>price</th>
+          <th></th>
+        </tr>
+        <%trainRoutes.forEach((trainRoute)=>{%>
+        <tr>
 
-            <td><%=trainRoute.Train.trainName%></td>
-            <td><%=trainRoute.Route.departure%></td>
-            <td><%=trainRoute.Route.arrival%></td>
-            <td><%=trainRoute.convertTime(trainRoute.departureTime)%></td>
-            <td><%=trainRoute.convertTime(trainRoute.arrivalTime)%></td>
-            <td><%=trainRoute.quota%></td>
-            <td><%=trainRoute.price%></td>
-            <td><a href="/users/<%=trainRoute.id%>/booktrain">Book this trip</a></td>
-          </tr>
-          <%})%>
+          <td><%=trainRoute.id%><%=trainRoute.Train.trainName%></td>
+          <td><%=trainRoute.Route.departure%></td>
+          <td><%=trainRoute.Route.arrival%></td>
+          <td><%=trainRoute.convertTime(trainRoute.departureTime)%></td>
+          <td><%=trainRoute.convertTime(trainRoute.arrivalTime)%></td>
+          <td><%=trainRoute.quota%></td>
+          <td><%=trainRoute.price%></td>
+          <td>|</td>
+          <td>
+            <form method="POST" action="/users/booktrain">
+              <input type="text" name="trainRouteId" value="<%=trainRoute.id%>" hidden >
+              <input type="text" name="departureTime" value="<%=trainRoute.convertTime(trainRoute.departureTime)%>" hidden >
+              Date<input type="text" placeholder="YYYY-MM-DD" name="departureDate">
+              Seat (person)<select name="reservedSeat">
+                  <option name="reservedSeat" value=1 >1</option>
+                  <option name="reservedSeat" value=2 >2</option>
+                  <option name="reservedSeat" value=3 >3</option>
+                  <option name="reservedSeat" value=4 >4</option>
+                  <option name="reservedSeat" value=600 >600</option>
+                </select>
+              <input type="submit" value="Book This Train">
+            </form>
+          </td>
+        </tr>
+        <%})%>
 
         </table>
       </fieldset>
