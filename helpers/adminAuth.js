@@ -6,7 +6,9 @@ let adminAuthHandler = (req, res, next) => {
     if (isAdmin){
       next()
     } else (
-      res.redirect('/users/login')
+      res.render('./', {
+        loginMessage : 'Only Admin can access!'
+      })
     )
   } else {
     res.render('./',{

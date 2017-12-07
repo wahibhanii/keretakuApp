@@ -6,7 +6,7 @@ const authHandler = require('../helpers/adminAuth');
 const TrainRoute = models.TrainRoute;
 
 //show all route
-router.get('/',(req,res)=>{
+router.get('/',authHandler.adminAuthHandler,(req,res)=>{
 
     Route.findAll()
     .then((dataRoutes)=>{

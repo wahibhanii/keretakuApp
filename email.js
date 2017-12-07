@@ -15,9 +15,9 @@ let transporter = nodemailer.createTransport({
 
 let HelperOptions = {
   from : "KeretakuApp" <'keretakuapp@gmail.com',
-  to : 'tobiaskusnaman@gmail.com',
+  to : 'fuadigame@gmail.com',
   subject : "E-Booking Tiket Anda - No. Pemesanan",
-  text : 'Dear pelanggan'
+  text : 'Dear pelanggan setia Orochi'
 
 /*
 Dear [Nama pelanggan],
