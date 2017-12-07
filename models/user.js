@@ -46,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
       user.password = hashPassword
     });
   });
-  
+
   User.associate = (models) => {
     User.belongsToMany(models.TrainRoute, {through: 'Transaction', foreignKey: 'UserId', otherKey: 'TrainRouteId'})
     User.hasMany(models.Transaction)
