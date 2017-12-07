@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <%include ../partials/style%>
+    <%include ../partials/navigation%>
     <h1>Login</h1>
     <h3><a href="/">Back to Homepage</a></h3>
     <form name="signup" method="POST" action="/users/login">
@@ -9,7 +11,7 @@
         <tr><input type="text" name="email"></tr><br>
         <tr>Password</tr><br>
         <tr><input type="text" name="password" placeholder="input your password"></tr><br>
-        <% if(err) {%>  
+        <% if(err) {%>
           <tr><a  style="color:red" ><%=err%></a></tr><br>
         <%}%>
         <tr><input type="submit" value="Login"></tr><br>

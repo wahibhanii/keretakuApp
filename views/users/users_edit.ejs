@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <%include ../partials/style%>
+    <%include ../partials/navigation%>
     <h1>Edit User</h1>
     <h3><a href="/users">Back to Users List</a></h3>
     <form name="addNewUser" method="POST" action="/users/edit/<%=dataUser.id%>">
@@ -13,12 +15,12 @@
         <tr>Role</tr><br>
         <tr>
           <select name="role">
-            <option name="role" value="user" 
+            <option name="role" value="user"
             <%if (dataUser.role === 'user') {%>
               selected
             <%}%>
               >User</option>
-            <option name="role" value="admin" 
+            <option name="role" value="admin"
             <%if (dataUser.role === 'admin') {%>
               selected
             <%}%>
@@ -27,7 +29,7 @@
         </tr><br>
         <tr>Poin</tr><br>
         <tr><input type="text" name="poin" value="<%=dataUser.poin%>"></tr><br>
-        <% if(err) {%>  
+        <% if(err) {%>
           <tr><a  style="color:red" ><%=err%></a></tr><br>
         <%}%>
         <tr><input type="submit" value="Edit User"></tr><br>
