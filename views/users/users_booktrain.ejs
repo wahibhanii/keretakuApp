@@ -45,6 +45,11 @@
                 <input type="text" name="userId" value="<%=dataUser.id%>" hidden>
                 <input type="text" name="departureTime" value="<%=departureDateTime%>" hidden>
                 <input type="text" name="seatReserved" value="<%=reservedSeat%>" hidden>
+                <input type="text" name="departure" value="<%=dataTrainRoute.Route.departure%>" hidden>
+                <input type="text" name="arrival" value="<%=dataTrainRoute.Route.arrival%>" hidden>
+                <input type="text" name="trainName" value="<%=dataTrainRoute.Train.trainName%>" hidden>
+                <input type="text" name="email" value="<%=dataUser.email%>" hidden>
+
             </tr>
             <% if (err == undefined) {%>
               <tr><td colspan="2"><input type="submit" value="Book Train!"></td></tr>
