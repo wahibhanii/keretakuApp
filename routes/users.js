@@ -9,9 +9,10 @@ const Route = models.Route
 const passwordAuth = require ('../helpers/passwordAuth')
 const adminAuth = require('../helpers/adminAuth')
 const convertTime = require('../helpers/convertTime')
+const authHandler = require('../helpers/adminAuth');
 
 // ------------------- READ --------------------------
-router.get('/', (req, res)=> {
+router.get('/', authHandler.adminAuthHandler, (req, res)=> {
   let err;
   if (req.query && req.query.hasOwnProperty('err')){
     err = req.query.err
