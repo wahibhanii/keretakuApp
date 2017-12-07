@@ -12,9 +12,10 @@ const convertTime     = require('../helpers/convertTime')
 const getTripTime     = require('../helpers/getTripTime')
 const authHandler     = require('../helpers/adminAuth')
 const sendBookingInfo = require('../helpers/email')
+const allHandler      = require('../helpers/allAuth');
 
 // ------------------- READ --------------------------
-router.get('/', (req, res)=> {
+router.get('/', authHandler.adminAuthHandler, (req, res)=> {
   let err;
   if (req.query && req.query.hasOwnProperty('err')){
     err = req.query.err
@@ -33,7 +34,7 @@ router.get('/', (req, res)=> {
 })
 
 // ------------------- CREATE/ADD -------------------
-router.get('/add', (req, res) => {
+router.get('/add', authHandler.adminAuthHandler,(req, res) => {
   let err;
   if (req.query && req.query.hasOwnProperty('err')){
     err = req.query.err
@@ -71,7 +72,7 @@ router.post('/add', (req, res) => {
 
 
 // ------------------- UPDATE/EDIT ---------------------
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', authHandler.adminAuthHandler,(req, res) => {
   let err;
   if (req.query && req.query.hasOwnProperty('err')){
     err = req.query.err
@@ -92,7 +93,7 @@ router.get('/edit/:id', (req, res) => {
 
 })
 
-router.post('/edit/:id', (req, res) => {
+router.post('/edit/:id', authHandler.adminAuthHandler,(req, res) => {
   let userId = req.params.id
   let newUser = {
     id        : userId,
@@ -127,7 +128,7 @@ router.post('/edit/:id', (req, res) => {
 
 // ------------------- DESTROY/DELETE -------------------
 
-router.get('/delete/:id', (req, res) => {
+router.get('/delete/:id',authHandler.adminAuthHandler, (req, res) => {
   let userId = req.params.id;
   let dataUser;
   let err;
@@ -226,14 +227,40 @@ router.post('/login', (req, res) => {
   })
 })
 
+router.get('/logout',(req,res)=>{
+  req.session.destroy((err)=>{
+    if(err){
+      res.send(err)
+    } else {
+      res.redirect('/')
+    }
+  });
+})
+
+
 // //------------------- USERPAGE ----------------
 // router.get('/userpage', adminAuth.adminAuthHandler, (req, res) => {
 //   res.send(req.session.user)
 
+// // })
+
+
+// router.get('/:id/transactions/', allHandler.allAuthHandler, (req, res) => {
+//   let userId = req.params.id
+//   User.findAll({
+//     where: {id: userId},
+//     include : [{
+//       model: TrainRoute,
+//       include: [{model: Route}]
+//       }
+//     ]
+//   })
+//   .then((dataTransactions) => {
+//     res.render('./users/users_transactions',{
+//       dataTransactions : dataTransactions[0]
+//     })
+//   })
 // })
-
-
-
 
 //-------------------- BOOK TRAIN / CREATE TRANSACTION -----------------------
 
@@ -281,9 +308,9 @@ router.post('/booktrain', (req, res) => {
     dataUser = queryUser
     return TrainRoute.findOne({
       where: {id: trainRouteId},
-      include: [{model: Train}, 
-        {model: Route}, 
-        {model: Transaction, 
+      include: [{model: Train},
+        {model: Route},
+        {model: Transaction,
         }
       ]
     })
@@ -348,8 +375,8 @@ router.post('/booktrain/success', (req, res) => {
 // ===================================================================================
 // --------------------- ALL TRANSACTION --------------
 
-router.get('/:id/transactions/', (req, res) => {
-  let userId = req.session.user.userId
+router.get('/:id/transactions/', allHandler.allAuthHandler,(req, res) => {
+  let userId = req.params.id
   User.findAll({
     where: {id: userId},
     include : [{

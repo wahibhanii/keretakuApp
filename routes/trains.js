@@ -81,7 +81,6 @@ router.get('/delete/:id',adminAuth.adminAuthHandler,(req,res)=>{
 
 //------------------- SCHEDULE ---------------------
 router.get('/schedule',(req,res)=>{
-  // console.log('*************',req.session.user.role);
   let findDeparture = '';
   let findArrival = '';
   let objWhere = {}

@@ -3,16 +3,19 @@ const router = express.Router()
 const models = require('../models')
 const Route = models.Route
 const authHandler = require('../helpers/adminAuth');
+const TrainRoute = models.TrainRoute;
 
 //show all route
-router.get('/', (req,res)=>{
-  Route.findAll()
-  .then((dataRoutes)=>{
-    res.render('./routes/route', {
-      dataRoutes : dataRoutes,
-      session : req.session
+router.get('/',authHandler.adminAuthHandler,(req,res)=>{
+
+    Route.findAll()
+    .then((dataRoutes)=>{
+      // res.send(dataRoutes)
+      res.render('./routes/route', {
+        dataRoutes : dataRoutes,
+        session : req.session
+      })
     })
-  })
 })
 
 //add route
